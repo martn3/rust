@@ -159,12 +159,13 @@ impl<'a> Renderer<'a> {
 
     fn render_test_started(&mut self, started: &TestStarted) {
         if self.builder.config.verbose_tests {
-            self.render_test_started_verbose(outcome, test);
+            self.render_test_started_verbose(started);
         }
     }
 
-    fn render_test_started_verbose(&self, outcome: Outcome<'_>, started: &TestStarted) {
-        println!("test {} ... ", started.name);
+    fn render_test_started_verbose(&self, started: &TestStarted) {
+        print!("test {} ... ", started.name);
+        let _ = std::io::stdout().flush();
     }
 
     fn render_test_outcome_verbose(&self, outcome: Outcome<'_>, test: &TestOutcome) {
@@ -392,7 +393,7 @@ enum TestMessage {
     Failed(TestOutcome),
     Ignored(TestOutcome),
     Timeout { name: String },
-    Started(TestStart),
+    Started(TestStarted),
 }
 
 #[derive(serde_derive::Deserialize)]
@@ -403,7 +404,7 @@ struct BenchOutcome {
 }
 
 #[derive(serde_derive::Deserialize)]
-struct TestStart {
+struct TestStarted {
     name: String,
 }
 
