@@ -157,8 +157,17 @@ impl<'a> Renderer<'a> {
         }
     }
 
+    fn render_test_started(&mut self, started: &TestStarted) {
+        if self.builder.config.verbose_tests {
+            self.render_test_started_verbose(outcome, test);
+        }
+    }
+
+    fn render_test_started_verbose(&self, outcome: Outcome<'_>, started: &TestStarted) {
+        println!("test {} ... ", started.name);
+    }
+
     fn render_test_outcome_verbose(&self, outcome: Outcome<'_>, test: &TestOutcome) {
-        print!("test {} ... ", test.name);
         self.builder.colored_stdout(|stdout| outcome.write_long(stdout)).unwrap();
         if let Some(exec_time) = test.exec_time {
             print!(" ({exec_time:.2?})");
@@ -287,7 +296,9 @@ impl<'a> Renderer<'a> {
             Message::Test(TestMessage::Timeout { name }) => {
                 println!("test {name} has been running for a long time");
             }
-            Message::Test(TestMessage::Started) => {} // Not useful
+            Message::Test(TestMessage::Started(started)) => {
+                self.render_test_started(&started);
+            }
         }
     }
 }
@@ -381,7 +392,7 @@ enum TestMessage {
     Failed(TestOutcome),
     Ignored(TestOutcome),
     Timeout { name: String },
-    Started,
+    Started(TestStart),
 }
 
 #[derive(serde_derive::Deserialize)]
@@ -389,6 +400,11 @@ struct BenchOutcome {
     name: String,
     median: u64,
     deviation: u64,
+}
+
+#[derive(serde_derive::Deserialize)]
+struct TestStart {
+    name: String,
 }
 
 #[derive(serde_derive::Deserialize)]
