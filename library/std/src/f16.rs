@@ -1282,6 +1282,8 @@ impl f16 {
     /// ```
     /// #![feature(f16)]
     /// #![feature(float_erf)]
+    /// # // FIXME(f16_f128): extendhfsf2, truncsfhf2, __gnu_h2f_ieee, __gnu_f2h_ieee missing for many platforms
+    /// # #[cfg(all(target_arch = "x86_64", target_os = "linux"))] {
     /// # #[cfg(reliable_f16_math)] {
     /// /// The error function relates what percent of a normal distribution lies
     /// /// within `x` standard deviations (scaled by `1/sqrt(2)`).
@@ -1295,6 +1297,7 @@ impl f16 {
     /// assert!((within_standard_deviations(2.0) - 95.450).abs() < 0.1);
     /// // 99.7% of a normal distribution is within three standard deviations
     /// assert!((within_standard_deviations(3.0) - 99.730).abs() < 0.1);
+    /// # }
     /// # }
     /// ```
     #[rustc_allow_incoherent_impl]
