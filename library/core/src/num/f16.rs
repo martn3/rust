@@ -509,11 +509,13 @@ impl f16 {
     /// #![feature(f16)]
     /// # // FIXME(f16_f128): remove when `extendhfsf2` and `truncsfhf2` are available
     /// # #[cfg(target_os = "linux")] {
+    /// # #[cfg(not(target_arch = "mips"))] {
     ///
     /// let x = 2.0_f16;
     /// let abs_difference = (x.recip() - (1.0 / x)).abs();
     ///
     /// assert!(abs_difference <= f16::EPSILON);
+    /// # }
     /// # }
     /// ```
     #[inline]
@@ -530,11 +532,13 @@ impl f16 {
     /// #![feature(f16)]
     /// # // FIXME(f16_f128): remove when `extendhfsf2` and `truncsfhf2` are available
     /// # #[cfg(target_os = "linux")] {
+    /// # #[cfg(not(target_arch = "mips"))] {
     ///
     /// let angle = std::f16::consts::PI;
     ///
     /// let abs_difference = (angle.to_degrees() - 180.0).abs();
     /// assert!(abs_difference <= 0.5);
+    /// # }
     /// # }
     /// ```
     #[inline]
@@ -553,12 +557,14 @@ impl f16 {
     /// #![feature(f16)]
     /// # // FIXME(f16_f128): remove when `extendhfsf2` and `truncsfhf2` are available
     /// # #[cfg(target_os = "linux")] {
+    /// # #[cfg(not(target_arch = "mips"))] {
     ///
     /// let angle = 180.0f16;
     ///
     /// let abs_difference = (angle.to_radians() - std::f16::consts::PI).abs();
     ///
     /// assert!(abs_difference <= 0.01);
+    /// # }
     /// # }
     /// ```
     #[inline]
@@ -870,6 +876,7 @@ impl f16 {
     ///
     /// ```
     /// #![feature(f16)]
+    /// # #[cfg(not(target_arch = "mips"))] {
     ///
     /// struct GoodBoy {
     ///     name: &'static str,
@@ -897,6 +904,7 @@ impl f16 {
     ///         .zip([-5.0, 0.1, 10.0, 99.0, f16::INFINITY, f16::NAN].iter())
     ///         .for_each(|(a, b)| assert_eq!(a.to_bits(), b.to_bits()))
     /// }
+    /// # }
     /// ```
     #[inline]
     #[must_use]
