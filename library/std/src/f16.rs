@@ -1282,8 +1282,6 @@ impl f16 {
     /// ```
     /// #![feature(f16)]
     /// #![feature(float_erf)]
-    /// # // FIXME(f16_f128): extendhfsf2, truncsfhf2, __gnu_h2f_ieee, __gnu_f2h_ieee missing for many platforms
-    /// # #[cfg(all(target_arch = "x86_64", target_os = "linux"))] {
     /// # #[cfg(reliable_f16_math)] {
     /// /// The error function relates what percent of a normal distribution lies
     /// /// within `x` standard deviations (scaled by `1/sqrt(2)`).
@@ -1298,7 +1296,6 @@ impl f16 {
     /// // 99.7% of a normal distribution is within three standard deviations
     /// assert!((within_standard_deviations(3.0) - 99.730).abs() < 0.1);
     /// # }
-    /// # }
     /// ```
     #[rustc_allow_incoherent_impl]
     #[must_use = "method returns a new number and does not mutate the original value"]
@@ -1308,6 +1305,10 @@ impl f16 {
     pub fn erf(self) -> f16 {
         (unsafe { cmath::erff(self as f32) }) as f16
     }
+
+        /// # // FIXME(f16_f128): extendhfsf2, truncsfhf2, __gnu_h2f_ieee, __gnu_f2h_ieee missing for many platforms
+    /// # #[cfg(all(target_arch = "x86_64", target_os = "linux"))] {
+    /// # }
 
     /// Complementary error function.
     ///
@@ -1324,12 +1325,14 @@ impl f16 {
     /// ```
     /// #![feature(f16)]
     /// #![feature(float_erf)]
+    /// # #[cfg(reliable_f16_math)] {
     /// let x: f16 = 0.123;
     ///
     /// let one = x.erf() + x.erfc();
     /// let abs_difference = (one - 1.0).abs();
     ///
     /// assert!(abs_difference <= f16::EPSILON);
+    /// # }
     /// ```
     #[rustc_allow_incoherent_impl]
     #[must_use = "method returns a new number and does not mutate the original value"]
