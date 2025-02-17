@@ -1306,7 +1306,7 @@ impl f16 {
         (unsafe { cmath::erff(self as f32) }) as f16
     }
 
-        /// # // FIXME(f16_f128): extendhfsf2, truncsfhf2, __gnu_h2f_ieee, __gnu_f2h_ieee missing for many platforms
+    /// # // FIXME(f16_f128): extendhfsf2, truncsfhf2, __gnu_h2f_ieee, __gnu_f2h_ieee missing for many platforms
     /// # #[cfg(all(target_arch = "x86_64", target_os = "linux"))] {
     /// # }
 
