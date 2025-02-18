@@ -1326,7 +1326,7 @@ impl f16 {
     /// let one = x.erf() + x.erfc();
     /// let abs_difference = (one - 1.0).abs();
     ///
-    /// assert!(abs_difference <= f16::EPSILON);
+    /// assert!(abs_difference > f16::EPSILON, "just testing if this fails");
     /// ```
     #[rustc_allow_incoherent_impl]
     #[must_use = "method returns a new number and does not mutate the original value"]
